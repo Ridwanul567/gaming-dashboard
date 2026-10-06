@@ -1,0 +1,25 @@
+name: Python CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+    
+jobs:
+  quality-gates:
+    name: "Code Quality Checks"
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Checkout repo."
+        uses: actions/checkout@v7
+      - name: "Install Python."
+        uses: actions/setup-python@v7
+        with:
+          python-version: '3.14'
+      - name: "Install necessary libraries."
+        run: pip3 install -r requirements.txt
+      - name: "Run tests."
+        run: pytest test_*.py
+      - name: "Examine code quality."
+        run: pylint --fail-under 8.0 *.py

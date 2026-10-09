@@ -21,10 +21,10 @@ def get_api_key() -> str:
         logging.error("Steam API Key is not defined in environment.")
         raise EnvironmentError("Missing Steam API Key")
     if not isinstance(api_key, str):
-        logging.error("Invalid Steam API Key")
+        logging.error("Invalid Steam API Key (Must be string format).")
         raise TypeError("Steam API Key must be of string format.")
     if len(api_key) != 32:
-        logging.error("Invalid Steam API Key")
+        logging.error("Invalid Steam API Key (Must be 32 characters long).")
         raise ValueError("Steam API Key must have 32 characters!")
     return api_key
 
@@ -116,5 +116,4 @@ if __name__ == "__main__":
     # user_data = load_users(ids)
     # print(user_data)
     steam_id = os.getenv("STEAM_ID")
-    print(steam_id)
     print(load_games(steam_id))

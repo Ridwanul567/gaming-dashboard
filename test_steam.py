@@ -1,4 +1,4 @@
-"""Test Suite for steam functions."""
+"""Test Suite for Steam functions."""
 from unittest.mock import patch, MagicMock
 import logging
 import pytest
@@ -9,16 +9,31 @@ from steam import (EXAMPLE_STEAM_ID, get_api_key, validate_steam_ids,
 
 class TestGetAPIKey:
     @patch("steam.os.getenv")
-    def test_invalid_api_key_1(self, invalid_key):
+    def test_invalid_api_key_1(self, invalid_key, caplog):
+        caplog.set_level(logging.ERROR)
+        invalid_key.return_value = None
+        with pytest.raises(EnvironmentError):
+            get_api_key()
+        message = "Steam API Key is not defined in environment."
+        assert message in caplog.text
+
+    @patch("steam.os.getenv")
+    def test_invalid_api_key_2(self, invalid_key, caplog):
+        caplog.set_level(logging.ERROR)
         invalid_key.return_value = 123
         with pytest.raises(TypeError):
             get_api_key()
+        message = "Invalid Steam API Key (Must be string format)."
+        assert message in caplog.text
 
     @patch("steam.os.getenv")
-    def test_invalid_api_key_2(self, invalid_key):
+    def test_invalid_api_key_3(self, invalid_key, caplog):
+        caplog.set_level(logging.ERROR)
         invalid_key.return_value = "XA23BDC312MSD45"
         with pytest.raises(ValueError):
             get_api_key()
+        message = "Invalid Steam API Key (Must be 32 characters long)."
+        assert message in caplog.text
 
     @patch("steam.os.getenv")
     def test_valid_api_key(self, valid_key):

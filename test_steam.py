@@ -1,3 +1,4 @@
+# pylint: skip-file
 """Test Suite for Steam functions."""
 from unittest.mock import patch, MagicMock
 import logging

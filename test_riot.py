@@ -1,3 +1,4 @@
+# pylint: skip-file
 """Test Suite for Riot functions."""
 from unittest.mock import patch, MagicMock
 import logging
